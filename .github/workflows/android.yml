@@ -1,0 +1,79 @@
+name: Build and Upload APKs
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          cache: 'gradle'
+
+      - name: Make Gradlew Executable
+        run: chmod +x ./gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload Mr.SAI-debug-armeabi-v7a APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-debug-armeabi-v7a
+          path: app/build/outputs/apk/debug/app-armeabi-v7a-debug.apk
+
+      - name: Upload Mr.SAI-debug-arm64-v8a APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-debug-arm64-v8a
+          path: app/build/outputs/apk/debug/app-arm64-v8a-debug.apk
+
+      - name: Upload Mr.SAI-debug-x86 APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-debug-x86
+          path: app/build/outputs/apk/debug/app-x86-debug.apk
+
+      - name: Upload Mr.SAI-debug-x86_64 APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-debug-x86_64
+          path: app/build/outputs/apk/debug/app-x86_64-debug.apk
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Upload Mr.SAI-release-armeabi-v7a APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-release-armeabi-v7a
+          path: app/build/outputs/apk/release/app-armeabi-v7a-release.apk
+
+      - name: Upload Mr.SAI-release-arm64-v8a APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-release-arm64-v8a
+          path: app/build/outputs/apk/release/app-arm64-v8a-release.apk
+
+      - name: Upload Mr.SAI-release-x86 APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-release-x86
+          path: app/build/outputs/apk/release/app-x86-release.apk
+
+      - name: Upload Mr.SAI-release-x86_64 APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: Mr.SAI-release-x86_64
+          path: app/build/outputs/apk/release/app-x86_64-release.apk
